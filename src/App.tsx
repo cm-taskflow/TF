@@ -1,6 +1,14 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import { Auth } from './components/Auth'
+import { Layout } from './components/Layout'
 import { Dashboard } from './components/Dashboard'
+import { ClientsList } from './components/ClientsList'
+import { ClientForm } from './components/ClientForm'
+import { ClientDetails } from './components/ClientDetails'
+import { TasksList } from './components/TasksList'
+import { TaskForm } from './components/TaskForm'
+import { TaskDetails } from './components/TaskDetails'
 import { Loader } from 'lucide-react'
 
 function App() {
@@ -17,7 +25,27 @@ function App() {
     )
   }
 
-  return user ? <Dashboard /> : <Auth />
+  if (!user) {
+    return <Auth />
+  }
+
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/clients" element={<ClientsList />} />
+          <Route path="/clients/new" element={<ClientForm />} />
+          <Route path="/clients/:id" element={<ClientDetails />} />
+          <Route path="/clients/:id/edit" element={<ClientForm />} />
+          <Route path="/tasks" element={<TasksList />} />
+          <Route path="/tasks/new" element={<TaskForm />} />
+          <Route path="/tasks/:id" element={<TaskDetails />} />
+          <Route path="/tasks/:id/edit" element={<TaskForm />} />
+        </Routes>
+      </Layout>
+    </Router>
+  )
 }
 
 export default App
